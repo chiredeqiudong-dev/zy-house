@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zy's House</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/interaction.css">
+    <link rel="stylesheet" href="css/loading.css">
+    <link rel="stylesheet" href="css/computer.css">
+</head>
+
+<body>
+    <div id="main-content">
+        <div class="side-panel">
+            <h2>Operation Guide</h2>
+            <div id="operation-guide">
+                <div class="guide-section">
+                    <h3>Basic Movement</h3>
+                    <div class="key-row center">
+                        <div class="key-cap" id="key-w">W</div>
+                    </div>
+                    <div class="key-row center">
+                        <div class="key-cap" id="key-a">A</div>
+                        <div class="key-cap" id="key-s">S</div>
+                        <div class="key-cap" id="key-d">D</div>
+                    </div>
+                </div>
+                <div class="guide-section">
+                    <h3>Action</h3>
+                    <div class="key-row">
+                        <div class="key-cap" id="key-e">E</div>
+                        <span class="key-label">Interact</span>
+                    </div>
+                    <div class="key-row">
+                        <div class="key-cap key-wide" id="key-esc">Esc</div>
+                        <span class="key-label">Exit</span>
+                    </div>
+                    <div class="key-row">
+                        <div class="key-cap key-wide" id="key-enter">Enter</div>
+                        <span class="key-label">Confirm</span>
+                    </div>
+                </div>
+            </div>
+            <h2 class="options-title">Options</h2>
+            <div id="options-panel">
+                <div class="volume-row">
+                    <span class="volume-icon" id="bgm-toggle">♪</span>
+                    <input type="range" id="bgm-volume" min="0" max="100" value="70" disabled class="pixel-slider">
+                    <span class="volume-percent" id="volume-percent">70%</span>
+                </div>
+            </div>
+        </div>
+        <div class="side-panel">
+            <h2>Zy's House</h2>
+            <div id="game-container">
+                <!-- 开始界面 -->
+                <div id="start-screen">
+                    <h1 class="start-title">TuringZY</h1>
+                    <button id="start-btn">Explore The World</button>
+                </div>
+                <!-- 加载界面 -->
+                <div id="loading-screen">
+                    <div class="loading-bar-wrap">
+                        <span class="loading-status" id="loading-status">世界生成中.</span>
+                        <div class="loading-row">
+                            <div class="loading-bar">
+                                <div class="loading-bar-fill" id="loading-bar-fill"></div>
+                            </div>
+                            <span class="loading-percent" id="loading-percent">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 交互 UI -->
+                <div id="interact-prompt">Press E</div>
+                <div id="dialogue-box">
+                    <div id="dialogue-name"></div>
+                    <div id="dialogue-text"></div>
+                    <div id="dialogue-hint"></div>
+                </div>
+                <!-- 电脑桌面界面 -->
+                <div id="computer-screen">
+                    <div id="computer-desktop">
+                        <div id="desktop-clock"></div>
+                        <div id="desktop-icons"></div>
+                        <div id="desktop-windows"></div>
+                        <div id="app-dock"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bottom-header">
+        <span>Welcome To My Web Pixel World</span>
+        <span>Copyright &copy; 2026 <a href="https://blog.turingzy.cn/about/" target="_blank" rel="noopener">Zhang Yang</a> | <span id="uptime"></span></span>
+        <span>Special Thanks To All Asset Creators For Their Amazing Work</span>
+        <span>Assets From <a href="https://kenney.nl/" target="_blank" rel="noopener">kenney.nl</a> and <a href="https://itch.io/" target="_blank" rel="noopener">itch.io</a> — Music by <a href="https://pixabay.com/users/bursanchank-53686561/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=450640" target="_blank" rel="noopener">bursanchank</a> from <a href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=450640" target="_blank" rel="noopener">Pixabay</a></span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+    <script src="js/scenes/BootScene.js"></script>
+    <script src="js/scenes/StartScene.js"></script>
+    <script src="js/scenes/LoadingScene.js"></script>
+    <script src="js/scenes/GameScene.js"></script>
+    <script src="js/apps/ComputerApp.js"></script>
+    <script src="js/apps/BrowserApp.js"></script>
+    <script src="js/apps/MirrorApp.js"></script>
+    <script src="js/apps/TelevisionApp.js"></script>
+    <script src="js/apps/BookshelfApp.js"></script>
+    <script src="js/apps/WindowApp.js"></script>
+    <script src="js/systems/InteractionManager.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/uptime.js"></script>
+</body>
+
+</html>

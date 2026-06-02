@@ -1,0 +1,288 @@
+/* 字体 */
+@font-face {
+    font-family: 'Excalifont';
+    src: url('../assets/font/Excalifont-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PressStart2P';
+    src: url('../assets/font/PressStart2P-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pixel32';
+    src: url('../assets/font/Pixel32_CN.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: #111 url('../assets/wallpaper.png') center/cover no-repeat;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Excalifont', sans-serif;
+    cursor: url('../assets/pixel-cursor.png') 8 8, crosshair;
+}
+
+/* 主内容区 */
+#main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 24px;
+}
+
+/* 左右面板通用样式 */
+.side-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.side-panel h2 {
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+/* 左侧操作指南 */
+#operation-guide {
+    width: 300px;
+    min-height: 400px;
+    background: rgba(30, 30, 30, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    color: #ccc;
+}
+
+/* 选项面板标题 */
+.side-panel .options-title {
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+/* 选项面板 */
+#options-panel {
+    width: 300px;
+    background: rgba(30, 30, 30, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    color: #ccc;
+}
+
+/* 音量控制 */
+.volume-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.volume-icon {
+    font-family: 'PressStart2P', monospace;
+    font-size: 16px;
+    color: #4caf50;
+    line-height: 1;
+    user-select: none;
+    cursor: pointer;
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+    transition: color 0.1s ease;
+}
+.volume-icon:hover {
+    color: #66bb6a;
+}
+.volume-icon.paused {
+    color: #888;
+}
+.volume-icon.paused:hover {
+    color: #aaa;
+}
+.volume-percent {
+    font-family: 'PressStart2P', monospace;
+    font-size: 10px;
+    color: #aaa;
+    min-width: 32px;
+    text-align: right;
+    user-select: none;
+}
+
+/* 像素风滑块 */
+.pixel-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 6px;
+    background: #333;
+    border: 2px solid #555;
+    border-radius: 0;
+    outline: none;
+    cursor: pointer;
+}
+.pixel-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #4caf50;
+    border: 2px solid #66bb6a;
+    border-radius: 0;
+    cursor: pointer;
+}
+.pixel-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background: #4caf50;
+    border: 2px solid #66bb6a;
+    border-radius: 0;
+    cursor: pointer;
+}
+.pixel-slider::-webkit-slider-thumb:hover {
+    background: #66bb6a;
+}
+.pixel-slider::-moz-range-thumb:hover {
+    background: #66bb6a;
+}
+.pixel-slider:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* 右侧游戏区 */
+#game-container {
+    width: 672px;
+    height: 576px;
+    position: relative;
+}
+
+#game-container canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* 底部长条 */
+#bottom-header {
+    width: 100%;
+    min-height: 72px;
+    padding: 12px 24px;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #888;
+    font-family: 'PressStart2P', monospace;
+    font-size: 10px;
+    line-height: 1.8;
+    text-align: center;
+}
+
+#bottom-header a {
+    color: #ccc;
+    text-decoration: none;
+}
+
+#bottom-header a:hover,
+#bottom-header a:focus {
+    color: #fff;
+    text-decoration: underline;
+    outline: none;
+}
+
+/* 操作指南 */
+.guide-section {
+    margin-bottom: 24px;
+}
+.guide-section h3 {
+    font-size: 15px;
+    color: #fff;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* 键位布局 */
+.key-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+.key-row.center {
+    justify-content: center;
+}
+
+/* 3D 机械键盘按键 */
+.key-cap {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'PressStart2P', monospace;
+    font-size: 14px;
+    color: #eee;
+    background: linear-gradient(180deg, #4a4a4a 0%, #3a3a3a 100%);
+    border: 2px solid #555;
+    border-bottom: 4px solid #222;
+    border-right: 3px solid #2a2a2a;
+    border-radius: 6px;
+    box-shadow:
+        0 1px 0 #666 inset,
+        0 -1px 0 #333 inset,
+        0 4px 6px rgba(0, 0, 0, 0.4),
+        0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    user-select: none;
+    transition: all 0.08s ease;
+}
+.key-cap.active {
+    background: linear-gradient(180deg, #383838 0%, #444 100%);
+    border-bottom-width: 2px;
+    box-shadow:
+        0 1px 0 #555 inset,
+        0 -1px 0 #333 inset,
+        0 1px 2px rgba(0, 0, 0, 0.3);
+    transform: translateY(2px);
+    color: #4fc3f7;
+    text-shadow: 0 0 8px rgba(79, 195, 247, 0.6);
+}
+.key-label {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    font-size: 15px;
+    color: #aaa;
+}
+.key-wide {
+    width: auto;
+    padding: 0 12px;
+    font-size: 12px;
+}

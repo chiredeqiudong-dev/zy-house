@@ -1,0 +1,71 @@
+/* 交互提示 */
+#interact-prompt {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 10;
+    font-family: 'PressStart2P', monospace;
+    font-size: 14px;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+#interact-prompt.visible {
+    opacity: 1;
+    animation: prompt-bounce 0.6s ease-in-out infinite alternate;
+}
+@keyframes prompt-bounce {
+    from { transform: translate(-50%, -50%); }
+    to   { transform: translate(-50%, calc(-50% - 4px)); }
+}
+
+/* 视觉小说对话框 */
+#dialogue-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 20, 0.92);
+    padding: 0;
+    z-index: 20;
+    display: none;
+    min-height: 120px;
+}
+#dialogue-box.visible {
+    display: flex;
+    flex-direction: column;
+}
+
+#dialogue-name {
+    font-family: 'PressStart2P', monospace;
+    font-size: 11px;
+    color: #4fc3f7;
+    padding: 10px 18px 0;
+    min-height: 24px;
+}
+
+#dialogue-text {
+    font-family: 'Pixel32', sans-serif;
+    font-size: 18px;
+    color: #e0e0e0;
+    line-height: 1.6;
+    padding: 8px 18px 0;
+    flex: 1;
+}
+
+#dialogue-hint {
+    font-family: 'PressStart2P', monospace;
+    font-size: 10px;
+    color: #555;
+    text-align: right;
+    padding: 6px 18px 10px;
+}
+#dialogue-hint .arrow {
+    animation: arrow-breathe 1.2s ease-in-out infinite;
+}
+@keyframes arrow-breathe {
+    0%, 100% { opacity: 0.3; }
+    50%      { opacity: 1; }
+}

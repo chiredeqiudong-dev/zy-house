@@ -1,0 +1,101 @@
+/* ========== 开始界面 ========== */
+#start-screen {
+    position: absolute;
+    inset: 0;
+    background: #0a0a0a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    z-index: 30;
+}
+#start-screen.hidden {
+    display: none;
+}
+
+.start-title {
+    font-family: 'PressStart2P', monospace;
+    font-size: 36px;
+    color: #fff;
+    letter-spacing: 4px;
+    text-shadow: 0 2px 0 #333;
+}
+
+#start-btn {
+    font-family: 'PressStart2P', monospace;
+    font-size: 12px;
+    color: #ccc;
+    background: transparent;
+    border: 2px solid #555;
+    padding: 14px 32px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.15s ease;
+}
+#start-btn:hover {
+    color: #fff;
+    border-color: #aaa;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+}
+
+/* ========== 加载界面 ========== */
+#loading-screen {
+    position: absolute;
+    inset: 0;
+    background: url('../assets/loading.png') repeat;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    z-index: 30;
+}
+#loading-screen.visible {
+    display: flex;
+}
+
+.loading-bar-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 70%;
+}
+
+.loading-status {
+    font-family: 'PressStart2P', monospace;
+    font-size: 9px;
+    color: #888;
+    white-space: nowrap;
+}
+
+.loading-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.loading-bar {
+    flex: 1;
+    height: 4px;
+    background: #333;
+    position: relative;
+    overflow: hidden;
+}
+
+.loading-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: #4caf50;
+    transition: width 0.1s linear;
+}
+
+.loading-percent {
+    font-family: 'PressStart2P', monospace;
+    font-size: 10px;
+    color: #aaa;
+    min-width: 36px;
+    text-align: right;
+}
