@@ -40,14 +40,9 @@ class WindowApp {
     }
 
     _onKeyDown = (e) => {
-        if (e.key === 'Escape') {
-            e.preventDefault();
-            e.stopPropagation();
-            this.close();
-        } else {
-            e.preventDefault();
-            e.stopPropagation();
-        }
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.key === 'Escape') this.close();
     }
 
     // ---- Config ----
@@ -80,6 +75,7 @@ class WindowApp {
         img.className = 'wdw-scene';
         img.src = this._api + '?' + Date.now();
         img.alt = '窗外风景';
+        img.decoding = 'async';
 
         // Loading state
         const loader = document.createElement('div');

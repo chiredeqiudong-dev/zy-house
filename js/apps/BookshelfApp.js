@@ -67,14 +67,9 @@ class BookshelfApp {
     }
 
     _onKeyDown = (e) => {
-        if (e.key === 'Escape') {
-            e.preventDefault();
-            e.stopPropagation();
-            this.close();
-        } else {
-            e.preventDefault();
-            e.stopPropagation();
-        }
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.key === 'Escape') this.close();
     }
 
     // ---- Data ----
@@ -240,6 +235,7 @@ class BookshelfApp {
                 cover.src = book.url;
                 cover.alt = book.title;
                 cover.loading = 'lazy';
+                cover.decoding = 'async';
 
                 const tooltip = document.createElement('div');
                 tooltip.className = 'bk-tooltip';
@@ -274,10 +270,10 @@ class BookshelfApp {
         this._currentPage = 0;
 
         // Update tab active state
-        const tabs = this._tabBar.querySelectorAll('.bk-tab');
-        tabs.forEach((t, i) => {
-            t.classList.toggle('bk-tab-active', i === index);
-        });
+        const tabs = this._tabBar.children;
+        for (let i = 0; i < tabs.length; i++) {
+            tabs[i].classList.toggle('bk-tab-active', i === index);
+        }
 
         this._renderShelf();
     }

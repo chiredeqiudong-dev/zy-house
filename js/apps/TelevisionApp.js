@@ -43,6 +43,7 @@ class TelevisionApp {
         this._closed = true;
         document.removeEventListener('keydown', this._onKeyDown);
         if (this._bgTimer) { clearInterval(this._bgTimer); this._bgTimer = null; }
+        if (this._volHideTimer) { clearTimeout(this._volHideTimer); this._volHideTimer = null; }
         if (this._overlay) { this._overlay.remove(); this._overlay = null; }
 
         if (this.scene.input && this.scene.input.keyboard) {
@@ -54,8 +55,9 @@ class TelevisionApp {
     }
 
     _onKeyDown = (e) => {
-        if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); this.close(); }
-        else { e.preventDefault(); e.stopPropagation(); }
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.key === 'Escape') this.close();
     }
 
     // ---- Data ----
@@ -70,6 +72,7 @@ class TelevisionApp {
         if (!this._posters.length) {
             this._posters = [{ title: 'No Posters', url: '' }];
         }
+        this._urlIndex = new Map(this._posters.map((p, i) => [p.url, i]));
     }
 
     // ---- UI Construction ----
@@ -86,7 +89,6 @@ class TelevisionApp {
 
         this._bgLayerA = document.createElement('div');
         this._bgLayerA.className = 'tv-bg-img';
-        this._bgLayerA.style.backgroundImage = `url(${this._posters[0].url})`;
         this._bgLayerA.style.opacity = '1';
         this._bgLayerA.style.zIndex = '1';
 
@@ -301,6 +303,7 @@ class TelevisionApp {
             img.src = p.url;
             img.alt = p.title;
             img.loading = 'lazy';
+            img.decoding = 'async';
 
             const label = document.createElement('div');
             label.className = 'tv-poster-label';
@@ -326,7 +329,7 @@ class TelevisionApp {
             const url = poster.dataset.url;
             if (url) {
                 this._setBackground(url);
-                this._bgIndex = this._posters.findIndex(p => p.url === url);
+                this._bgIndex = this._urlIndex.get(url) ?? 0;
                 if (this._bgTimer) { clearInterval(this._bgTimer); }
                 this._bgTimer = setInterval(() => {
                     this._bgIndex = (this._bgIndex + 1) % this._posters.length;
@@ -339,7 +342,8 @@ class TelevisionApp {
     _startBgCycle() {
         if (this._posters.length <= 1) return;
         this._bgIndex = Math.floor(Math.random() * this._posters.length);
-        this._setBackground(this._posters[this._bgIndex].url);
+        // Set initial background directly (no crossfade) to avoid wasted download
+        this._bgLayerA.style.backgroundImage = `url(${this._posters[this._bgIndex].url})`;
 
         this._bgTimer = setInterval(() => {
             this._bgIndex = (this._bgIndex + 1) % this._posters.length;
