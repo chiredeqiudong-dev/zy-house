@@ -3,7 +3,7 @@ class TelevisionApp {
         this.scene = gameScene;
         this._resolve = null;
         this._overlay = null;
-        this._styleEl = null;
+        this._closed = false;
         this._posters = [];
         this._bgTimer = null;
         this._bgIndex = 0;
@@ -23,12 +23,10 @@ class TelevisionApp {
     open() {
         return new Promise((resolve) => {
             this._resolve = resolve;
-
-            this._styleEl = document.createElement('style');
-            this._styleEl.textContent = TelevisionApp.CSS;
-            document.head.appendChild(this._styleEl);
+            this._closed = false;
 
             this._loadPosters().then(() => {
+                if (this._closed) return;
                 this._buildUI();
                 this._bindEvents();
                 this._startBgCycle();
@@ -42,9 +40,9 @@ class TelevisionApp {
     }
 
     close() {
+        this._closed = true;
         document.removeEventListener('keydown', this._onKeyDown);
         if (this._bgTimer) { clearInterval(this._bgTimer); this._bgTimer = null; }
-        if (this._styleEl) { this._styleEl.remove(); this._styleEl = null; }
         if (this._overlay) { this._overlay.remove(); this._overlay = null; }
 
         if (this.scene.input && this.scene.input.keyboard) {
@@ -52,7 +50,7 @@ class TelevisionApp {
         }
         document.querySelectorAll('.key-cap.active').forEach(el => el.classList.remove('active'));
 
-        if (this._resolve) this._resolve();
+        if (this._resolve) { this._resolve(); this._resolve = null; }
     }
 
     _onKeyDown = (e) => {
@@ -360,270 +358,4 @@ class TelevisionApp {
         this._bgActive = this._bgActive === 'A' ? 'B' : 'A';
     }
 
-    // ---- Static CSS ----
-
-    static CSS = `
-/* ========== Root ========== */
-.tv-root {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 100;
-    overflow: hidden;
-    background: #000;
-}
-
-/* ========== Layer 1: Blurred Background ========== */
-.tv-bg {
-    position: absolute;
-    top: -10%; left: -10%;
-    width: 120%; height: 120%;
-    overflow: hidden;
-}
-
-.tv-bg-img {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-size: cover;
-    background-position: center;
-    filter: blur(20px) brightness(0.65);
-    transition: opacity 0.8s ease;
-}
-
-/* ========== Layer 2: Atmosphere Overlay ========== */
-.tv-mask {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 3;
-    background: radial-gradient(ellipse at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.35) 100%);
-    pointer-events: none;
-}
-
-/* ========== Layer 3: Marquee ========== */
-.tv-marquee {
-    position: absolute;
-    top: 50%; left: 0; right: 0;
-    transform: translateY(-50%);
-    z-index: 5;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding: 0 20px;
-}
-
-/* ---- Track ---- */
-.tv-track {
-    display: flex;
-    width: max-content;
-    animation-name: tv-scroll-left;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-fill-mode: none;
-}
-.tv-track-reverse {
-    animation-name: tv-scroll-right;
-}
-
-@keyframes tv-scroll-left {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-@keyframes tv-scroll-right {
-    0%   { transform: translateX(-50%); }
-    100% { transform: translateX(0); }
-}
-
-/* ---- Poster Set ---- */
-.tv-poster-set {
-    display: flex;
-    gap: 14px;
-    flex-shrink: 0;
-}
-
-/* ---- Poster ---- */
-.tv-poster {
-    flex-shrink: 0;
-    width: 110px;
-    aspect-ratio: 2 / 3;
-    border-radius: 6px;
-    overflow: hidden;
-    position: relative;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-    transition: transform 0.35s ease, filter 0.35s ease, opacity 0.35s ease;
-}
-
-.tv-poster-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.tv-poster-label {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    padding: 24px 8px 8px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
-    font-family: 'Excalifont', sans-serif;
-    font-size: 11px;
-    color: rgba(255,255,255,0.85);
-    text-align: center;
-    line-height: 1.5;
-    pointer-events: none;
-}
-
-/* ---- Focus & Dim ---- */
-.tv-marquee:hover .tv-poster {
-    opacity: 0.4;
-    filter: blur(2px) brightness(0.7);
-}
-
-.tv-poster:hover {
-    transform: scale(1.08);
-    opacity: 1 !important;
-    filter: none !important;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.7);
-    z-index: 10;
-}
-
-/* ========== Control Bar ========== */
-.tv-ctrl {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    z-index: 15;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    padding: 12px 24px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.7));
-}
-
-.tv-ctrl-btn {
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background 0.2s;
-}
-
-.tv-ctrl-btn:hover {
-    background: rgba(255,255,255,0.15);
-}
-
-.tv-ctrl-icon {
-    width: 20px;
-    height: 20px;
-    filter: invert(1) brightness(0.9);
-}
-
-.tv-ctrl-info {
-    font-family: 'Excalifont', sans-serif;
-    font-size: 13px;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 1px;
-    min-width: 90px;
-    text-align: center;
-}
-
-/* ---- Volume Control ---- */
-.tv-vol-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.tv-vol-popup {
-    position: absolute;
-    bottom: 44px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    background: rgba(0,0,0,0.8);
-    border-radius: 8px;
-    padding: 12px 10px 8px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.15s;
-}
-
-.tv-vol-popup.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.tv-vol-slider-wrap {
-    width: 24px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.tv-vol-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100px;
-    height: 4px;
-    background: rgba(255,255,255,0.25);
-    border-radius: 2px;
-    outline: none;
-    cursor: pointer;
-    transform: rotate(-90deg);
-    transform-origin: center center;
-}
-
-.tv-vol-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 14px;
-    height: 14px;
-    background: #fff;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.tv-vol-slider::-moz-range-thumb {
-    width: 14px;
-    height: 14px;
-    background: #fff;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-}
-
-.tv-vol-num {
-    font-family: 'Excalifont', sans-serif;
-    font-size: 12px;
-    color: rgba(255,255,255,0.8);
-    text-align: center;
-    min-width: 20px;
-}
-
-/* ========== Close Button ========== */
-.tv-close {
-    position: absolute;
-    top: 12px; right: 16px;
-    font-size: 20px;
-    color: rgba(255,255,255,0.4);
-    cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 4px;
-    transition: color 0.2s, background 0.2s;
-    font-family: sans-serif;
-    z-index: 20;
-}
-.tv-close:hover {
-    color: #fff;
-    background: rgba(255,255,255,0.15);
-}
-`;
 }

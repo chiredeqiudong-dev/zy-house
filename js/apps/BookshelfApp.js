@@ -52,7 +52,10 @@ class BookshelfApp {
         this._closed = true;
         document.removeEventListener('keydown', this._onKeyDown);
         if (this._overlay) { this._overlay.remove(); this._overlay = null; }
-        this._pageLabel = null;   // Fix #8: clear stale refs
+        this._tabBar = null;
+        this._pageLabel = null;
+        this._prevBtn = null;
+        this._nextBtn = null;
         this._shelfArea = null;
 
         if (this.scene.input && this.scene.input.keyboard) {
@@ -270,8 +273,11 @@ class BookshelfApp {
         this._currentCat = index;
         this._currentPage = 0;
 
-        // Rebuild tabs with correct active state
-        this._buildTabs(index);
+        // Update tab active state
+        const tabs = this._tabBar.querySelectorAll('.bk-tab');
+        tabs.forEach((t, i) => {
+            t.classList.toggle('bk-tab-active', i === index);
+        });
 
         this._renderShelf();
     }
